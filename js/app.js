@@ -269,163 +269,33 @@
   }
 
   // ----- Effet “nerfs” (canvas)
-// ----- Effet “nerfs” (canvas) — optimisé mobile
-function initNetworkFXAlternating(){
-  if(prefersReduced) return;
+  function initNetworkFXAlternating(){
+    if(prefersReduced) return;
 
-  var sections = qsa('.section');
-  if(!sections.length) return;
+    var sections = qsa('.section');
+    if(!sections.length) return;
 
-  var isMobile = window.matchMedia('(max-width: 768px)').matches;
-  var items = [], raf, last = 0;
-  var TARGET_FPS = isMobile ? 28 : 60;
-  var FRAME = 1000 / TARGET_FPS;
+    var items = [], raf;
 
-  function addNetwork(sec, palette){
-    if(getComputedStyle(sec).position === 'static'){ sec.style.position = 'relative'; }
-    var c = document.createElement('canvas');
-    c.setAttribute('aria-hidden','true');
-    c.className = 'fx-canvas';
-    c.style.position = 'absolute';
-    c.style.inset = '0';
-    c.style.zIndex = '1';
-    c.style.pointerEvents = 'none';
-    sec.insertBefore(c, sec.firstChild);
+    function addNetwork(sec, palette){
+      if(getComputedStyle(sec).position === 'static'){ sec.style.position = 'relative'; }
+      var c = document.createElement('canvas');
+      c.setAttribute('aria-hidden','true');
+      c.className = 'fx-canvas';
+      c.style.position = 'absolute';
+      c.style.inset = '0';
+      c.style.zIndex = '1';
+      c.style.pointerEvents = 'none';
+      sec.insertBefore(c, sec.firstChild);
 
-    items.push({
-      sec:sec, c:c, ctx:c.getContext('2d'),
-      w:0, h:0, dpr:1, nodes:[], N:0, MAX:0,
-      stroke: palette.stroke, dot: palette.dot,
-      baseA: palette.baseA, varA: palette.varA,
-      lw: palette.lw || 1.1,
-      active:false
-    });
-  }
-
-  function resizeItem(o){
-    o.dpr = Math.min(window.devicePixelRatio||1, 2);
-    var r = o.sec.getBoundingClientRect();
-    o.w = Math.max(300, r.width);
-    o.h = Math.max(220, r.height);
-    o.c.width  = Math.floor(o.w * o.dpr);
-    o.c.height = Math.floor(o.h * o.dpr);
-    o.c.style.width  = o.w + 'px';
-    o.c.style.height = o.h + 'px';
-    o.ctx.setTransform(o.dpr,0,0,o.dpr,0,0);
-
-    var area = o.w * o.h;
-    // densité plus faible sur mobile
-    var N = Math.floor(area / (isMobile ? 20000 : 12000));
-    o.N = Math.max(isMobile ? 10 : 16, Math.min(isMobile ? 24 : 42, N));
-    o.MAX = Math.max(120, Math.min(220, Math.floor(Math.min(o.w,o.h)*0.22)));
-
-    o.nodes.length = 0;
-    for(var i=0;i<o.N;i++){
-      o.nodes.push({ x:Math.random()*o.w, y:Math.random()*o.h, vx:(Math.random()-.5)*0.7, vy:(Math.random()-.5)*0.7 });
-    }
-  }
-
-  function drawAll(ts){
-    if(ts - last < FRAME){ raf = requestAnimationFrame(drawAll); return; }
-    last = ts;
-
-    for(var n=0;n<items.length;n++){
-      var it = items[n];
-      if(!it.active) continue; // ne dessine que si visible
-
-      var ctx = it.ctx, w = it.w, h = it.h, nodes = it.nodes, i, j;
-      ctx.clearRect(0,0,w,h);
-
-      for(i=0;i<nodes.length;i++) for(j=i+1;j<nodes.length;j++){
-        var a=nodes[i], b=nodes[j], dx=a.x-b.x, dy=a.y-b.y, dist=Math.sqrt(dx*dx+dy*dy);
-        if(dist < it.MAX){
-          var t = 1 - (dist / it.MAX);
-          ctx.globalAlpha = it.baseA + t*it.varA;
-          ctx.strokeStyle = it.stroke;
-          ctx.lineWidth = it.lw;
-          ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
-        }
-      }
-      ctx.globalAlpha = 1;
-
-      for(i=0;i<nodes.length;i++){
-        var p = nodes[i];
-        ctx.beginPath(); ctx.arc(p.x,p.y,2.0,0,Math.PI*2);
-        ctx.fillStyle = it.dot; ctx.fill();
-        p.x+=p.vx; p.y+=p.vy; if(p.x<0||p.x>w) p.vx*=-1; if(p.y<0||p.y>h) p.vy*=-1;
-      }
-    }
-    raf = requestAnimationFrame(drawAll);
-  }
-
-  function onResize(){ for(var i=0;i<items.length;i++) resizeItem(items[i]); }
-  function onScroll(){
-    for(var i=0;i<items.length;i++){
-      var it = items[i], r = it.sec.getBoundingClientRect();
-      var vis = Math.max(0, Math.min(1, 1 - Math.abs(r.top)/Math.max(1,r.height)));
-      it.c.style.opacity = (0.28 + vis*0.55).toFixed(2);
-      it.c.style.transform = 'translateY(' + (-r.top*0.06).toFixed(1) + 'px)';
-    }
-  }
-
-  // Observe visibilité des sections pour activer/désactiver le dessin
-  var canvasIO = ('IntersectionObserver' in window)
-    ? new IntersectionObserver(function(entries){
-        entries.forEach(function(ent){
-          for(var i=0;i<items.length;i++){
-            if(items[i].sec === ent.target){ items[i].active = ent.isIntersecting; break; }
-          }
-        });
-      }, {threshold: 0})
-    : null;
-
-  // 1) Hero (#intro) — nerfs plus foncés
-  var intro = qs('#intro');
-  if(intro){
-    addNetwork(intro, {
-      stroke: 'rgba(12,101,120,.75)',
-      dot:    'rgba(9,78,92,.92)',
-      baseA:  0.18,
-      varA:   0.28,
-      lw:     1.35
-    });
-  }
-
-  // 2) Autres sections : une sur deux (intro exclue)
-  var all = qsa('.section');
-  var toggle = false;
-  for(var s=0;s<all.length;s++){
-    var sec = all[s];
-    if(sec === intro) continue;
-    toggle = !toggle;
-    if(toggle){
-      addNetwork(sec, {
-        stroke: '#0ea5a0',
-        dot:    '#0a8f8b',
-        baseA:  0.10,
-        varA:   0.20,
-        lw:     1.1
+      items.push({
+        sec:sec, c:c, ctx:c.getContext('2d'),
+        w:0, h:0, dpr:1, nodes:[], N:0, MAX:0,
+        stroke: palette.stroke, dot: palette.dot,
+        baseA: palette.baseA, varA: palette.varA,
+        lw: palette.lw || 1.1
       });
     }
-  }
-
-  for(var z=0; z<items.length; z++){
-    resizeItem(items[z]);
-    if(canvasIO) canvasIO.observe(items[z].sec);
-    else items[z].active = true; // fallback
-  }
-
-  window.addEventListener('resize', onResize);
-  window.addEventListener('scroll', onScroll, { passive:true });
-  document.addEventListener('visibilitychange', function(){
-    if(document.hidden && raf){ cancelAnimationFrame(raf); raf = null; }
-    else if(!raf){ raf = requestAnimationFrame(drawAll); }
-  });
-
-  onScroll();
-  raf = requestAnimationFrame(drawAll);
-}
-
 
     function resizeItem(o){
       o.dpr = Math.min(window.devicePixelRatio||1, 2);
