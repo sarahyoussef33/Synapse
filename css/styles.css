@@ -1,5 +1,5 @@
 /* =========================
-   Synapse AI — STYLES CLEAN
+   Synapse AI — STYLES CLEAN (refactor)
    ========================= */
 
 /* ---------- Design tokens ---------- */
@@ -7,15 +7,14 @@
   /* Brand */
   --brand-500:#0ea5a0;  --brand-600:#0b8f8b;  --brand-700:#0b7a75;
 
-  /* Blue accent (hero titre) */
-  --blue-500:#1fc4d0;
-  --blue-600:#16a5c1;
-  --blue-700:#0f7fa4;
+  /* Accent (hero / titres) */
+  --blue-500:#1fc4d0; --blue-600:#16a5c1; --blue-700:#0f7fa4;
+  --title-grad: linear-gradient(135deg, var(--blue-500), var(--blue-700));
 
   /* Base */
-  --navy-900:#0f172a;   --navy-800:#1e293b;
-  --ink:#0f172a;        --text:#0f172a;   --muted:#64748b;
-  --bg:#ffffff;         --bg-alt:#fbfeff;
+  --navy-900:#0f172a; --navy-800:#1e293b;
+  --ink:#0f172a; --text:#0f172a; --muted:#64748b;
+  --bg:#ffffff;  --bg-alt:#fbfeff;
 
   /* UI */
   --line:rgba(15,23,42,.08); --focus:rgba(14,165,160,.35);
@@ -28,12 +27,15 @@
   --header-h:0px;
 }
 
-/* ---------- Reset ---------- */
+/* ---------- Reset & base ---------- */
 *{ box-sizing:border-box }
 html{
   scroll-behavior:smooth;
-  scroll-snap-type:y proximity;          /* fluide */
-  scroll-padding-top:var(--header-h);    /* ancres ok avec header fixe */
+  scroll-snap-type:y proximity;          /* snap doux */
+  scroll-padding-top:var(--header-h);    /* ancres OK avec header fixe */
+}
+@media (hover:none) and (pointer:coarse){
+  html{ scroll-snap-type:none }          /* ultra doux sur mobile tactile */
 }
 body{
   margin:0; color:var(--text); background:var(--bg); line-height:1.6;
@@ -45,7 +47,7 @@ img,svg,video{ max-width:100%; height:auto; display:block }
 
 /* ---------- Header (frosted) ---------- */
 .site-header{
-  position:fixed; top:0; left:0; right:0; z-index:10000;
+  position:fixed; inset:0 auto auto 0; right:0; z-index:10000;
   background:rgba(255,255,255,.34);
   -webkit-backdrop-filter:blur(14px) saturate(140%);
   backdrop-filter:blur(14px) saturate(140%);
@@ -77,15 +79,20 @@ h1,h2,h3{ color:var(--ink); margin:0 0 .5rem; line-height:1.2 }
 h1{ font-size:clamp(2rem, 2.2vw + 1.2rem, 3.6rem); letter-spacing:-.02em }
 h2{ font-size:clamp(1.6rem, 1.2vw + 1.1rem, 2rem) }
 h3{ font-size:1.1rem }
-.lead{ font-size:1.05rem; color:var(--navy-800) }
-p{ margin:.25rem 0 1rem; color:var(--navy-800) }
+p,.lead{ color:var(--navy-800) }
+.lead{ font-size:1.05rem }
 a{ color:var(--brand-600); text-decoration:none }
 a:hover{ color:var(--brand-700); text-decoration:underline }
-.skip-link{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden }
-.skip-link:focus{ left:16px; top:16px; width:auto; height:auto; padding:.6rem .9rem; background:#fff; border-radius:10px; outline:3px solid var(--focus); box-shadow:var(--shadow-md) }
+.skip-link{
+  position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden
+}
+.skip-link:focus{
+  left:16px; top:16px; width:auto; height:auto; padding:.6rem .9rem;
+  background:#fff; border-radius:10px; outline:3px solid var(--focus); box-shadow:var(--shadow-md)
+}
 :focus-visible{ outline:3px solid var(--focus); outline-offset:2px }
 
-/* ---------- Sections : full-screen + snap souple ---------- */
+/* ---------- Sections (full-screen + snap souple) ---------- */
 .section{
   min-height:100dvh; display:grid; align-content:center; position:relative;
   border-top:1px solid var(--line);
@@ -94,7 +101,10 @@ a:hover{ color:var(--brand-700); text-decoration:underline }
 .section:first-of-type{ border-top:0 }
 .section > .container{ position:relative; z-index:2 } /* devant les canvases */
 
-.section--alt{ background:linear-gradient(180deg,#fff,var(--bg-alt)); position:relative }
+.section--alt{
+  background:linear-gradient(180deg,#fff,var(--bg-alt));
+  position:relative;
+}
 .section--alt::before{
   content:""; position:absolute; inset:0; pointer-events:none; z-index:0;
   background:
@@ -129,14 +139,35 @@ a:hover{ color:var(--brand-700); text-decoration:underline }
   color:#fff; line-height:1.12; letter-spacing:-.02em;
   font-size:clamp(2.2rem, 2.5vw + 2rem, 4rem); margin:0 0 1rem;
 }
-.hero .lead{ color:rgba(255,255,255,.92); font-size:clamp(1.05rem, .35vw + 1rem, 1.25rem); max-width:70ch }
+.hero .lead{ font-size:clamp(1.05rem, .35vw + 1rem, 1.25rem); max-width:70ch }
+
+/* HERO #intro plus clair (override ciblé, pas de duplication inutile) */
+#intro.hero--mesh::before{ filter:blur(8px) saturate(1.02) brightness(1.30) }
+#intro.hero--mesh::after{
+  background-image:
+    radial-gradient(rgba(255,255,255,.16) 1.2px, transparent 1.2px),
+    radial-gradient(700px 300px at 15% -5%, rgba(255,255,255,.22), transparent 60%),
+    radial-gradient(600px 260px at 85% 0%,  rgba(255,255,255,.14), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.14), rgba(15,23,42,.10));
+}
 
 /* ---------- Canvas “nerfs” ---------- */
 .fx-canvas{ position:absolute; inset:0; z-index:1; pointer-events:none } /* contenu z=2 */
 
+/* ---------- Hero title BLEU ---------- */
+#intro{ --title-grad: linear-gradient(135deg, var(--blue-500), var(--blue-700)); }
+#intro h1{
+  background:var(--title-grad);
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+  text-shadow:0 1px 10px rgba(15,23,42,.10);
+}
+#intro .lead{ color:var(--blue-600) }
+
 /* ---------- Features / audiences ---------- */
 #intro .lead{ max-width:70ch }
-.feature-list{ list-style:none; padding:0; margin:0; display:grid; gap:12px }
+.feature-list,
+.audience-list{ list-style:none; padding:0; margin:0 }
+.feature-list{ display:grid; gap:12px }
 .feature-list li{
   position:relative; background:#fff; border:1px solid var(--line);
   border-radius:14px; padding:14px 16px 14px 42px; box-shadow:var(--shadow-sm)
@@ -147,12 +178,18 @@ a:hover{ color:var(--brand-700); text-decoration:underline }
   background:linear-gradient(135deg,var(--brand-500),var(--brand-700));
   box-shadow:0 0 0 3px rgba(14,165,160,.12);
 }
-.audience-list{ list-style:none; padding:0; margin:0; display:flex; flex-wrap:wrap; gap:10px }
-.audience-list li{ padding:8px 12px; border:1px solid var(--line); border-radius:999px; background:#fff; box-shadow:var(--shadow-sm) }
+.audience-list{ display:flex; flex-wrap:wrap; gap:10px }
+.audience-list li{
+  padding:8px 12px; border:1px solid var(--line); border-radius:999px;
+  background:#fff; box-shadow:var(--shadow-sm)
+}
 
 /* ---------- Équipe ---------- */
 .team-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px }
-.card-person{ background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow-md) }
+.card-person{
+  background:#fff; border:1px solid var(--line);
+  border-radius:var(--radius); padding:18px; box-shadow:var(--shadow-md)
+}
 .person__name{ margin:0 0 .25rem; font-size:1.05rem }
 .person__role{ margin:0 0 .25rem; color:var(--muted) }
 .person__bio{ margin:0; color:var(--navy-800) }
@@ -203,6 +240,39 @@ a:hover{ color:var(--brand-700); text-decoration:underline }
   background:rgba(14,165,160,.12); color:#105551; border:1px solid rgba(14,165,160,.22)
 }
 
+/* ---------- Animations titres (réutilisable) ---------- */
+.heading-anim{
+  opacity:0; transform:translateY(14px) scale(.98); filter:blur(6px);
+  transition:opacity 700ms cubic-bezier(.2,.65,.2,1),
+             transform 800ms cubic-bezier(.2,.65,.2,1),
+             filter 900ms ease;
+  will-change:opacity,transform,filter;
+}
+.heading-anim.is-in{ opacity:1; transform:translateY(0) scale(1); filter:blur(0) }
+
+/* Hero title: stagger mot-par-mot + soulignement */
+#intro h1.hero-title{ display:inline-block; line-height:1.12; position:relative }
+#intro h1.hero-title .word{
+  display:inline-block;
+  opacity:0; transform:translateY(20px) scale(.98); filter:blur(6px);
+  transition:opacity 600ms cubic-bezier(.2,.65,.2,1) calc(var(--i)*70ms),
+             transform 700ms cubic-bezier(.2,.65,.2,1) calc(var(--i)*70ms),
+             filter 800ms ease calc(var(--i)*70ms);
+  will-change:opacity,transform,filter;
+  background:var(--title-grad);
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+}
+#intro h1.hero-title.is-in .word{ opacity:1; transform:translateY(0) scale(1); filter:blur(0) }
+#intro h1.hero-title::after{
+  content:""; display:block; height:3px; border-radius:999px;
+  background:linear-gradient(90deg, var(--blue-500), var(--blue-700));
+  width:0%; margin-top:12px;
+  transition:width 900ms cubic-bezier(.2,.65,.2,1) 200ms;
+}
+#intro h1.hero-title.is-in::after{ width:52% }
+/* neutralise l’anim générique si posée sur le H1 du hero */
+#intro h1.hero-title.heading-anim{ opacity:1; transform:none; filter:none }
+
 /* ---------- Responsive ---------- */
 @media (max-width:1024px){ .team-grid{ grid-template-columns:repeat(2,1fr) } }
 @media (max-width:720px){
@@ -210,99 +280,3 @@ a:hover{ color:var(--brand-700); text-decoration:underline }
   .footer__inner{ flex-direction:column; align-items:flex-start; gap:16px; padding:28px 0 16px }
   .footer__nav{ flex-wrap:wrap; gap:10px }
 }
-@media (max-width:768px){
-  html{ scroll-snap-type:y proximity } /* encore plus doux sur mobile */
-}
-
-/* ---------- Hero title BLEU ---------- */
-#intro h1{
-  background:linear-gradient(135deg, var(--blue-500), var(--blue-700));
-  -webkit-background-clip:text; background-clip:text;
-  -webkit-text-fill-color:transparent;
-  text-shadow:0 1px 10px rgba(15,23,42,.10);
-}
-#intro .lead{ color:var(--blue-600) }
-
-/* HERO #intro plus clair */
-#intro.hero--mesh{ --mesh-brightness: 1.30; } /* ↑ luminosité */
-#intro.hero--mesh::before{
-  filter: blur(8px) saturate(1.02) brightness(var(--mesh-brightness));
-}
-/* voile + halos plus blancs, moins bleutés */
-#intro.hero--mesh::after{
-  background-image:
-    radial-gradient(rgba(255,255,255,.16) 1.2px, transparent 1.2px), /* grille plus claire */
-    radial-gradient(700px 300px at 15% -5%, rgba(255,255,255,.22), transparent 60%),
-    radial-gradient(600px 260px at 85% 0%,  rgba(255,255,255,.14), transparent 60%),
-    linear-gradient(180deg, rgba(255,255,255,.14), rgba(15,23,42,.10));
-}
-
-/* ===== Animation des titres au scroll ===== */
-.heading-anim{
-  opacity: 0;
-  transform: translateY(14px) scale(.98);
-  filter: blur(6px);
-  transition:
-    opacity 700ms cubic-bezier(.2,.65,.2,1),
-    transform 800ms cubic-bezier(.2,.65,.2,1),
-    filter 900ms ease;
-  will-change: opacity, transform, filter;
-}
-.heading-anim.is-in{
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  filter: blur(0);
-}
-
-/* Hero title: stagger mot-par-mot + soulignement */
-#intro h1.hero-title{ display:inline-block; line-height:1.12; position:relative; }
-
-#intro h1.hero-title .word{
-  display:inline-block;
-  opacity:0; transform:translateY(20px) scale(.98); filter:blur(6px);
-  transition:
-    opacity 600ms cubic-bezier(.2,.65,.2,1) calc(var(--i)*70ms),
-    transform 700ms cubic-bezier(.2,.65,.2,1) calc(var(--i)*70ms),
-    filter 800ms ease calc(var(--i)*70ms);
-  will-change:opacity,transform,filter;
-
-  /* conserve le dégradé bleu du parent */
-  background: linear-gradient(135deg, var(--blue-500), var(--blue-700));
-  -webkit-background-clip:text; background-clip:text;
-  -webkit-text-fill-color:transparent;
-}
-
-#intro h1.hero-title.is-in .word{
-  opacity:1; transform:translateY(0) scale(1); filter:blur(0);
-}
-
-/* petite barre qui s'étire sous le titre */
-#intro h1.hero-title::after{
-  content:""; display:block; height:3px; border-radius:999px;
-  background:linear-gradient(90deg, var(--blue-500), var(--blue-700));
-  width:0%; margin-top:12px;
-  transition: width 900ms cubic-bezier(.2,.65,.2,1) 200ms;
-}
-#intro h1.hero-title.is-in::after{ width:52%; }
-
-/* Si ton initHeadingFX avait déjà mis une anim générique sur le H1, on la neutralise ici */
-#intro h1.hero-title.heading-anim{ opacity:1; transform:none; filter:none; }
-
-/* Scroll fluide + pas de snap agressif sur tactile */
-html { scroll-behavior: smooth; }
-@media (hover: none) and (pointer: coarse){
-  html { scroll-snap-type: none !important; }
-}
-
-/* 100svh pour un plein écran fiable sur iOS */
-.section, .hero { min-height: 100svh; }
-
-/* Alléger un peu les effets sur mobile */
-@media (max-width: 768px){
-  .site-header{
-    -webkit-backdrop-filter: blur(6px) saturate(120%);
-    backdrop-filter: blur(6px) saturate(120%);
-  }
-  .hero--mesh::before{ filter: blur(6px) saturate(1.0) brightness(1.08); }
-}
-
