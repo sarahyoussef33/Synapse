@@ -1,0 +1,289 @@
+/* =========================
+   Synapse AI — STYLES CLEAN
+   ========================= */
+
+/* ---------- Design tokens ---------- */
+:root{
+  /* Brand */
+  --brand-500:#0ea5a0;  --brand-600:#0b8f8b;  --brand-700:#0b7a75;
+
+  /* Blue accent (hero titre) */
+  --blue-500:#1fc4d0;
+  --blue-600:#16a5c1;
+  --blue-700:#0f7fa4;
+
+  /* Base */
+  --navy-900:#0f172a;   --navy-800:#1e293b;
+  --ink:#0f172a;        --text:#0f172a;   --muted:#64748b;
+  --bg:#ffffff;         --bg-alt:#fbfeff;
+
+  /* UI */
+  --line:rgba(15,23,42,.08); --focus:rgba(14,165,160,.35);
+  --radius:16px;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.05);
+  --shadow-md:0 8px 24px rgba(2,6,23,.08);
+  --shadow-lg:0 18px 42px rgba(2,6,23,.12);
+
+  /* Mis à jour par JS */
+  --header-h:0px;
+}
+
+/* ---------- Reset ---------- */
+*{ box-sizing:border-box }
+html{
+  scroll-behavior:smooth;
+  scroll-snap-type:y proximity;          /* fluide */
+  scroll-padding-top:var(--header-h);    /* ancres ok avec header fixe */
+}
+body{
+  margin:0; color:var(--text); background:var(--bg); line-height:1.6;
+  font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+}
+img,svg,video{ max-width:100%; height:auto; display:block }
+.container{ max-width:1180px; margin:0 auto; padding:0 20px }
+
+/* ---------- Header (frosted) ---------- */
+.site-header{
+  position:fixed; top:0; left:0; right:0; z-index:10000;
+  background:rgba(255,255,255,.34);
+  -webkit-backdrop-filter:blur(14px) saturate(140%);
+  backdrop-filter:blur(14px) saturate(140%);
+  border-bottom:1px solid rgba(255,255,255,.45);
+  box-shadow:0 6px 24px rgba(2,6,23,.10);
+  transform:none !important;
+}
+.site-header.is-solid{
+  background:rgba(255,255,255,.75);
+  -webkit-backdrop-filter:blur(8px) saturate(140%);
+  backdrop-filter:blur(8px) saturate(140%);
+  box-shadow:var(--shadow-md);
+}
+.site-header::after{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(to bottom, rgba(144,207,231,.69), transparent 70%);
+}
+.header__inner{ display:flex; align-items:center; justify-content:space-between; gap:16px; padding:12px 20px }
+.brand{ display:flex; align-items:center; gap:12px; font-weight:700; color:var(--ink) }
+.site-nav .menu{ list-style:none; display:flex; gap:12px; margin:0; padding:0 }
+.site-nav .menu a{ display:inline-block; padding:8px 12px; border-radius:10px; color:var(--ink) }
+.site-nav .menu a:hover{ background:#f1f5f9 }
+
+/* Espace sous header pour le contenu */
+main#contenu{ padding-top:var(--header-h) }
+
+/* ---------- Typo & liens ---------- */
+h1,h2,h3{ color:var(--ink); margin:0 0 .5rem; line-height:1.2 }
+h1{ font-size:clamp(2rem, 2.2vw + 1.2rem, 3.6rem); letter-spacing:-.02em }
+h2{ font-size:clamp(1.6rem, 1.2vw + 1.1rem, 2rem) }
+h3{ font-size:1.1rem }
+.lead{ font-size:1.05rem; color:var(--navy-800) }
+p{ margin:.25rem 0 1rem; color:var(--navy-800) }
+a{ color:var(--brand-600); text-decoration:none }
+a:hover{ color:var(--brand-700); text-decoration:underline }
+.skip-link{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden }
+.skip-link:focus{ left:16px; top:16px; width:auto; height:auto; padding:.6rem .9rem; background:#fff; border-radius:10px; outline:3px solid var(--focus); box-shadow:var(--shadow-md) }
+:focus-visible{ outline:3px solid var(--focus); outline-offset:2px }
+
+/* ---------- Sections : full-screen + snap souple ---------- */
+.section{
+  min-height:100dvh; display:grid; align-content:center; position:relative;
+  border-top:1px solid var(--line);
+  scroll-snap-align:start; scroll-snap-stop:normal;
+}
+.section:first-of-type{ border-top:0 }
+.section > .container{ position:relative; z-index:2 } /* devant les canvases */
+
+.section--alt{ background:linear-gradient(180deg,#fff,var(--bg-alt)); position:relative }
+.section--alt::before{
+  content:""; position:absolute; inset:0; pointer-events:none; z-index:0;
+  background:
+    radial-gradient(600px 240px at 20% -10%, rgba(14,165,160,.08), transparent 55%),
+    radial-gradient(400px 200px at 85% 0%, rgba(14,165,160,.06), transparent 60%);
+}
+
+/* ---------- Hero (intro) : mesh + fond éclairci ---------- */
+.hero{
+  --hero-img:url("../img/hero.jpg");
+  min-height:100dvh; padding:0; border-top:0; isolation:isolate;
+  display:grid; align-content:center;
+}
+.hero.section--alt::before{ content:none }
+.hero--mesh::before{
+  content:""; position:absolute; inset:-1px; z-index:0; pointer-events:none;
+  background:var(--hero-img) center/cover no-repeat;
+  filter:blur(8px) saturate(1.02) brightness(1.18);
+  transform:scale(1.04);
+}
+.hero--mesh::after{
+  content:""; position:absolute; inset:-1px; z-index:0; pointer-events:none;
+  background-image:
+    radial-gradient(rgba(255,255,255,.12) 1.2px, transparent 1.2px),
+    radial-gradient(600px 260px at 15% 10%, rgba(31,141,201,.14), transparent 60%),
+    radial-gradient(480px 220px at 85% 15%, rgba(11,88,143,.10), transparent 60%),
+    linear-gradient(180deg, rgba(15,23,42,.22), rgba(15,23,42,.12));
+  background-size:22px 22px, auto, auto, auto;
+  background-position:0 0, center, center, center;
+}
+.hero h1{
+  color:#fff; line-height:1.12; letter-spacing:-.02em;
+  font-size:clamp(2.2rem, 2.5vw + 2rem, 4rem); margin:0 0 1rem;
+}
+.hero .lead{ color:rgba(255,255,255,.92); font-size:clamp(1.05rem, .35vw + 1rem, 1.25rem); max-width:70ch }
+
+/* ---------- Canvas “nerfs” ---------- */
+.fx-canvas{ position:absolute; inset:0; z-index:1; pointer-events:none } /* contenu z=2 */
+
+/* ---------- Features / audiences ---------- */
+#intro .lead{ max-width:70ch }
+.feature-list{ list-style:none; padding:0; margin:0; display:grid; gap:12px }
+.feature-list li{
+  position:relative; background:#fff; border:1px solid var(--line);
+  border-radius:14px; padding:14px 16px 14px 42px; box-shadow:var(--shadow-sm)
+}
+.feature-list li::before{
+  content:""; position:absolute; left:14px; top:50%; transform:translateY(-50%);
+  width:18px; height:18px; border-radius:50%;
+  background:linear-gradient(135deg,var(--brand-500),var(--brand-700));
+  box-shadow:0 0 0 3px rgba(14,165,160,.12);
+}
+.audience-list{ list-style:none; padding:0; margin:0; display:flex; flex-wrap:wrap; gap:10px }
+.audience-list li{ padding:8px 12px; border:1px solid var(--line); border-radius:999px; background:#fff; box-shadow:var(--shadow-sm) }
+
+/* ---------- Équipe ---------- */
+.team-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px }
+.card-person{ background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow-md) }
+.person__name{ margin:0 0 .25rem; font-size:1.05rem }
+.person__role{ margin:0 0 .25rem; color:var(--muted) }
+.person__bio{ margin:0; color:var(--navy-800) }
+
+/* ---------- Boutons ---------- */
+.btn{
+  --pad-x:16px; --pad-y:12px;
+  display:inline-flex; align-items:center; justify-content:center; gap:10px;
+  padding:var(--pad-y) var(--pad-x); border-radius:12px;
+  border:1px solid var(--line); background:#fff; color:var(--ink);
+  font-weight:600; box-shadow:var(--shadow-sm); cursor:pointer;
+  transition:transform .15s ease, box-shadow .2s ease;
+}
+.btn:hover{ transform:translateY(-1px); box-shadow:var(--shadow-md) }
+.btn:active{ transform:translateY(0) }
+.btn--primary{
+  border-color:transparent; color:#062827;
+  background:linear-gradient(135deg,var(--brand-500),var(--brand-700));
+  box-shadow:0 10px 20px rgba(14,165,160,.25)
+}
+.btn--primary:hover{ filter:saturate(1.05) }
+
+/* ---------- Footer (élargi + snap) ---------- */
+.site-footer{
+  border-top:1px solid var(--line); background:#fff;
+  scroll-snap-align:start; scroll-snap-stop:normal;
+  min-height:45dvh; display:grid; align-content:center;
+}
+.footer__inner{
+  display:flex; align-items:flex-start; justify-content:space-between;
+  gap:24px; padding:36px 0 22px; color:var(--muted)
+}
+.site-footer a{ color:var(--brand-600) }
+.footer__brand{ display:flex; align-items:center; gap:14px }
+.footer__name{ font-size:1.05rem; color:var(--ink) }
+.footer__slogan{ display:block; margin-top:2px; color:var(--muted) }
+.footer__nav{ display:flex; gap:12px; align-items:center }
+.footer__nav span{ color:var(--line) }
+.footer__bottom{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:14px 0 28px; color:var(--muted);
+  border-top:1px solid var(--line);
+}
+
+/* ---------- Badges ---------- */
+.badge{
+  display:inline-block; padding:6px 10px; border-radius:999px;
+  background:rgba(14,165,160,.12); color:#105551; border:1px solid rgba(14,165,160,.22)
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width:1024px){ .team-grid{ grid-template-columns:repeat(2,1fr) } }
+@media (max-width:720px){
+  .site-nav{ display:none }
+  .footer__inner{ flex-direction:column; align-items:flex-start; gap:16px; padding:28px 0 16px }
+  .footer__nav{ flex-wrap:wrap; gap:10px }
+}
+@media (max-width:768px){
+  html{ scroll-snap-type:y proximity } /* encore plus doux sur mobile */
+}
+
+/* ---------- Hero title BLEU ---------- */
+#intro h1{
+  background:linear-gradient(135deg, var(--blue-500), var(--blue-700));
+  -webkit-background-clip:text; background-clip:text;
+  -webkit-text-fill-color:transparent;
+  text-shadow:0 1px 10px rgba(15,23,42,.10);
+}
+#intro .lead{ color:var(--blue-600) }
+
+/* HERO #intro plus clair */
+#intro.hero--mesh{ --mesh-brightness: 1.30; } /* ↑ luminosité */
+#intro.hero--mesh::before{
+  filter: blur(8px) saturate(1.02) brightness(var(--mesh-brightness));
+}
+/* voile + halos plus blancs, moins bleutés */
+#intro.hero--mesh::after{
+  background-image:
+    radial-gradient(rgba(255,255,255,.16) 1.2px, transparent 1.2px), /* grille plus claire */
+    radial-gradient(700px 300px at 15% -5%, rgba(255,255,255,.22), transparent 60%),
+    radial-gradient(600px 260px at 85% 0%,  rgba(255,255,255,.14), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.14), rgba(15,23,42,.10));
+}
+
+/* ===== Animation des titres au scroll ===== */
+.heading-anim{
+  opacity: 0;
+  transform: translateY(14px) scale(.98);
+  filter: blur(6px);
+  transition:
+    opacity 700ms cubic-bezier(.2,.65,.2,1),
+    transform 800ms cubic-bezier(.2,.65,.2,1),
+    filter 900ms ease;
+  will-change: opacity, transform, filter;
+}
+.heading-anim.is-in{
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+/* Hero title: stagger mot-par-mot + soulignement */
+#intro h1.hero-title{ display:inline-block; line-height:1.12; position:relative; }
+
+#intro h1.hero-title .word{
+  display:inline-block;
+  opacity:0; transform:translateY(20px) scale(.98); filter:blur(6px);
+  transition:
+    opacity 600ms cubic-bezier(.2,.65,.2,1) calc(var(--i)*70ms),
+    transform 700ms cubic-bezier(.2,.65,.2,1) calc(var(--i)*70ms),
+    filter 800ms ease calc(var(--i)*70ms);
+  will-change:opacity,transform,filter;
+
+  /* conserve le dégradé bleu du parent */
+  background: linear-gradient(135deg, var(--blue-500), var(--blue-700));
+  -webkit-background-clip:text; background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+#intro h1.hero-title.is-in .word{
+  opacity:1; transform:translateY(0) scale(1); filter:blur(0);
+}
+
+/* petite barre qui s'étire sous le titre */
+#intro h1.hero-title::after{
+  content:""; display:block; height:3px; border-radius:999px;
+  background:linear-gradient(90deg, var(--blue-500), var(--blue-700));
+  width:0%; margin-top:12px;
+  transition: width 900ms cubic-bezier(.2,.65,.2,1) 200ms;
+}
+#intro h1.hero-title.is-in::after{ width:52%; }
+
+/* Si ton initHeadingFX avait déjà mis une anim générique sur le H1, on la neutralise ici */
+#intro h1.hero-title.heading-anim{ opacity:1; transform:none; filter:none; }
