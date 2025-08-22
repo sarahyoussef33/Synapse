@@ -287,3 +287,22 @@ a:hover{ color:var(--brand-700); text-decoration:underline }
 
 /* Si ton initHeadingFX avait déjà mis une anim générique sur le H1, on la neutralise ici */
 #intro h1.hero-title.heading-anim{ opacity:1; transform:none; filter:none; }
+
+/* Scroll fluide + pas de snap agressif sur tactile */
+html { scroll-behavior: smooth; }
+@media (hover: none) and (pointer: coarse){
+  html { scroll-snap-type: none !important; }
+}
+
+/* 100svh pour un plein écran fiable sur iOS */
+.section, .hero { min-height: 100svh; }
+
+/* Alléger un peu les effets sur mobile */
+@media (max-width: 768px){
+  .site-header{
+    -webkit-backdrop-filter: blur(6px) saturate(120%);
+    backdrop-filter: blur(6px) saturate(120%);
+  }
+  .hero--mesh::before{ filter: blur(6px) saturate(1.0) brightness(1.08); }
+}
+
