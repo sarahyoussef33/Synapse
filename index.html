@@ -12,26 +12,41 @@
 
   <header class="site-header header--glass">
     <div class="container header-inner">
-      <a class="brand" href="#top" aria-label="Accueil Synapse AI">
-        <img src="/img/logoSimple.png" alt="Logo Synapse AI" width="200" height="120">
-      </a>
 
-      <nav class="site-nav" aria-label="Navigation principale">
-        <ul class="menu">
-          <li><a href="#services">Our Services</a></li>
-          <li><a href="#contact">Contact Us</a></li>
-        </ul>
-      </nav>
-    </div>
+    <!-- Logo -->
+    <a class="brand" href="#top">
+      <img src="/img/logoSimple.png" alt="Synapse AI" class="logo" width="200" height="60">
+    </a>
+
+    <!-- Menu principal -->
+    <nav class="site-nav" aria-label="Navigation principale">
+      <ul class="menu">
+        <li><a href="#about">About</a></li>
+        <li><a href="#mission">Mission</a></li>
+        <li><a href="#vision">Vision</a></li>
+        <li><a href="#values">Values</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#privacy-security">Privacy</a></li>
+        <li><a href="#partners">Partners</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <!-- Burger (mobile only) -->
+    <button class="burger" aria-label="Menu">&#9776;</button>
+  </div>
   </header>
 
   <section id="intro" class="section section--alt hero hero--mesh" aria-labelledby="intro-title">
         <div class="container ">
           <h1 id="intro-title">Connecting minds, saving lives</h1>
           <p class="lead">
-            Lebanon’s leading digital healthcare startup is using advanced digital solutions to bridge the gap
-            between patients, doctors, and hospitals.
+            Lebanon’s leading digital healthcare company is redefining healthcare by seamlessly connecting patients, doctors, and hospitals through digital innovation..
           </p>
+          <div class="hero-buttons">
+            <a href="#services" class="btn btn-primary">Our Services</a>
+            <a href="#contact" class="btn btn-secondary">Contact Us</a>
+          </div>
         </div>
   </section>
   <main id="main">    
@@ -116,12 +131,12 @@
     </div>
 
     <div class="value-item reverse">
+      <div class="value-img">
+        <img src="/img/Patiente-centric.png" alt="Patient Centric">
+      </div>
       <div class="value-text">
         <h3>Patient-Centric</h3>
         <p>Every product, every solution, every line of code serves one purpose: improving the patient journey and creating better health outcomes.</p>
-      </div>
-      <div class="value-img">
-        <img src="/img/Patiente-centric.png" alt="Patient Centric">
       </div>
     </div>
 
@@ -136,12 +151,12 @@
     </div>
 
     <div class="value-item reverse">
+      <div class="value-img">
+        <img src="/img/integrity.png" alt="Integrity">
+      </div>
       <div class="value-text">
         <h3>Integrity</h3>
         <p>We build trust through transparency, ethics, and data security, because healthcare deserves nothing less.</p>
-      </div>
-      <div class="value-img">
-        <img src="/img/integrity.png" alt="Integrity">
       </div>
     </div>
 
@@ -164,8 +179,9 @@
         <h2 id="services-title">Services</h2>
         <div class="services-grid">
           <article class="card-service" id="his-emr">
-            <h3 class="service-name">HIS &amp; EMR Systems</h3>
+            
             <img class="service-avatar" src="/img/hs.png" alt="" width="96" height="96" loading="lazy">
+            <h3 class="service-name">HIS &amp; EMR Systems</h3>
             <ul class="service-description">
               <li>Unify your hospital operations with a single, secure platform.</li>
               <li>Access patient records instantly, streamline workflows, and make smarter decisions faster.</li>
@@ -174,26 +190,27 @@
           </article>
 
           <article class="card-service" id="custom-websites">
-            <h3 class="service-name">Custom Healthcare Websites</h3>
             <img class="service-avatar" src="/img/websites.png" alt="" width="96" height="96" loading="lazy">
+            <h3 class="service-name">Custom Healthcare Websites</h3>
             <p>We design secure, responsive, and user‑friendly websites for hospitals, clinics, and doctors. Each site is tailored to showcase your services, specialties, and patient resources, while reflecting your brand’s professionalism and credibility.</p>
           </article>
 
           <article class="card-service" id="telemedicine">
-            <h3 class="service-name">Telemedicine Platforms</h3>
             <img class="service-avatar" src="/img/medicalPlatform.png" alt="" width="96" height="96" loading="lazy">
+            <h3 class="service-name">Telemedicine Platforms</h3>
             <p>Launch full‑featured web‑based teleconsultation solutions. Enable video consultations, secure chat, and e‑prescriptions to expand access to care, connect specialists, and enhance patient experience.</p>
           </article>
 
           <article class="card-service" id="data-analytics">
-            <h3 class="service-name">Data &amp; Analytics Dashboards</h3>
             <img class="service-avatar" src="/img/data.png" alt="" width="96" height="96" loading="lazy">
+            <h3 class="service-name">Data &amp; Analytics Dashboards</h3>
             <p>Turn hospital data into actionable insights. Our custom dashboards provide real‑time metrics, reports, and patient outcome tracking to help management make informed, strategic decisions.</p>
           </article>
 
           <article class="card-service" id="training-elearning">
-            <h3 class="service-name">Staff Training &amp; eLearning Platforms</h3>
             <img class="service-avatar" src="/img/training.png" alt="" width="96" height="96" loading="lazy">
+            <h3 class="service-name">Staff Training &amp; eLearning Platforms</h3>
+            
             <p>Train staff efficiently with digital courses, certifications, and compliance programs. Keep your team updated on best practices, medical protocols, and new technologies.</p>
           </article>
         </div>
@@ -215,7 +232,7 @@
       
     </div>
     <p class="privacy-quote">
-      “With Synapse, confidentiality isn’t just a policy; it’s our promise.”
+      With Synapse, confidentiality isn’t just a policy; it’s our promise.
     </p>
   </div>
 </section>
@@ -227,18 +244,20 @@
     <h2 id="partners-title">Partners</h2>
     <p>Synapse works with international healthcare leaders and technology innovators to bring smarter, safer care to patients.</p>
 
-    <ul class="partners-list">
-      <li>
+    <ul class="partners-list partners-list--wall">
+      <li class="partner">
         <a href="https://ehealth-pro.com/fr/home" target="_blank" rel="noopener">
-          <img src="/img/IMEAH.png" alt="imeah" width="300" height="200" loading="lazy">
+          <img src="/img/IMEAH.png" alt="IMEAH" id="imeahLogo">
         </a>
       </li>
-      <li>
-        <span>ELITE Healthcare Solutions</span>
+
+      <li class="partner">
+        <span class="partner-fallback">ELITE Healthcare Solutions</span>
       </li>
+
     </ul>
 
-    <p class="privacy-quote" id="partners-style">Together, we’re transforming healthcare across borders.</p>
+    <p class="partners-quote">Together, we’re transforming healthcare across borders.</p>    
   </div>
 </section>
 
