@@ -35,7 +35,7 @@ body {
 
 header .logo {
 
-  margin-left: -120px;
+  margin-left: -170px;
 
 }
 .site-header {
@@ -147,6 +147,47 @@ header .logo {
   line-height: 1.6;
   color: #e6fffe;
 }
+
+
+/* Accessibilité : on garde la phrase complète pour les lecteurs d'écran */
+.sr-only {
+  position: absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip: rect(0,0,0,0); white-space:nowrap; border:0;
+}
+
+/* Si tu as encore un style qui cache #intro h1,
+   cette règle garantit sa révélation au moment du show */
+#intro #intro-title.fade-in.show {
+  opacity: 1;
+  transform: none;
+}
+
+/* Le H1 devient un conteneur flex horizontal */
+#intro #intro-title {
+  display: inline-flex;           /* reste à la taille du texte */
+  align-items: baseline;
+  gap: 0.35em;                    /* espace entre “Connecting minds,” et “saving lives” */
+  flex-wrap: wrap;                /* permet de passer à la ligne sur petits écrans */
+}
+
+#intro #intro-title .title-part {
+  display: inline-block;
+  line-height: 1.1;
+}
+
+
+
+
+/* Si tu avais précédemment .title-part { display:block; } ceci l’écrase. */
+
+/* (facultatif) forcer l’empilement sur mobile si tu préfères */
+@media (max-width: 520px) {
+  #intro #intro-title { 
+    flex-direction: row; /* par défaut */
+    /* ou column; si tu veux les forcer l’un sous l’autre sur mobile */
+  }
+}
+
 
 .hero-buttons {
   margin-top: 28px;
