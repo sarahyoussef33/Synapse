@@ -54,16 +54,41 @@ document.addEventListener("DOMContentLoaded", () => {
   const title = document.querySelector("#intro-title");
   const paragraph = document.querySelector("#intro p");
   const buttons = document.querySelector(".hero-buttons");
+  if (!title) return;
 
-  // On applique la classe fade-in
+  const full = (title.textContent || "").trim();
+
+  // Découpage du H1
+  let first = full, second = "";
+  const comma = full.indexOf(",");
+  if (comma !== -1) {
+    first = full.slice(0, comma + 1);
+    second = full.slice(comma + 1).trim();
+  } else {
+    const i = full.lastIndexOf(" ");
+    if (i > 0) { first = full.slice(0, i); second = full.slice(i + 1); }
+  }
+
+  // Injecte 2 spans
+  title.innerHTML = `
+    <span class="title-part first fade-in" aria-hidden="true">${first}</span>
+    <span class="title-part second fade-in" aria-hidden="true">${second}</span>
+    <span class="sr-only">${full}</span>
+  `;
+
   [title, paragraph, buttons].forEach(el => el.classList.add("fade-in"));
 
-  // Séquence : titre → texte → boutons
-  setTimeout(() => title.classList.add("show"), 300);      // titre
-  setTimeout(() => paragraph.classList.add("show"), 1200); // texte
-  setTimeout(() => buttons.classList.add("show"), 2000);   // boutons
-});
+  const firstSpan  = title.querySelector(".first");
+  const secondSpan = title.querySelector(".second");
 
+  setTimeout(() => title.classList.add("show"),     200);
+  setTimeout(() => firstSpan.classList.add("show"), 300);
+  setTimeout(() => secondSpan.classList.add("show"), 900);
+  setTimeout(() => {
+    paragraph.classList.add("show");
+    buttons.classList.add("show");
+  }, 1600); 
+});
 
 /*=== About - Mission - Vision ===*/
 
