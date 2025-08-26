@@ -31,7 +31,7 @@ body {
 }
 
 
-/* ===== Header (clean + burger) ===== */
+/* ===== Header (clean) ===== */
 
 header .logo {
 
@@ -86,17 +86,23 @@ header .logo {
   color: #07bfb3;
 }
 
-.burger {
-  display: none;
-  font-size: 26px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #0b1a22;
+
+
+@media (max-width: 768px) {
+  .header-inner { padding: 10px 16px; }
+
+  .brand img {
+    max-height: 40px;     
+    width: auto;
+    height: auto;
+  }
+
+  
+  header img { margin-left: 0 !important; } 
 }
 
 
-/* ===== Hero (image + overlay) ===== */
+/* ===== Hero  ===== */
 .hero {
   position: relative;
   isolation: isolate;
@@ -142,7 +148,6 @@ header .logo {
   color: #e6fffe;
 }
 
-/* Boutons du hero */
 .hero-buttons {
   margin-top: 28px;
   display: flex;
@@ -230,6 +235,7 @@ header .logo {
 }
 
 
+
 /* ===== Mission ===== */
 .mission {
   padding: clamp(60px, 8vw, 100px) 0;
@@ -241,6 +247,7 @@ header .logo {
   grid-template-columns: 1fr 1fr;
   gap: 40px;
   align-items: center;
+  flex-direction: row-reverse;
 }
 
 .mission-img img {
@@ -274,6 +281,19 @@ header .logo {
   font-size: 18px;
   line-height: 1.7;
   color: #333;
+}
+
+
+@media (max-width: 820px) {
+  .mission-grid,
+  .mission-grid.reverse {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .mission-text {
+    order: -1;
+  }
 }
 
 
@@ -437,7 +457,7 @@ header .logo {
   border-radius: 50%;
   padding: 24px;
   display: inline-block;
-  background: radial-gradient(120% 120% at 30% 20%, #d8d8dc, #7fe7e2 70%, #07bfb3 100%);
+  background: radial-gradient(120% 120% at 30% 20%, #d8dbdc, #7fe7e2 70%, #07bfb3 100%);
   box-shadow: 0 10px 28px rgba(7,191,179,.35);
   margin-bottom: 22px;
 }
@@ -475,16 +495,16 @@ header .logo {
   color: #7fe7e2;
 }
 
-/* Centrer les images des cartes Services */
+
 img.service-avatar,
 .service-card img {
-  display: block;            /* l'image devient un bloc */
-  margin-left: auto;         /* centre horizontalement */
+  display: block;            
+  margin-left: auto;         
   margin-right: auto;
 }
 
 
-/* ===== Privacy & Security (image + overlay + quote) ===== */
+/* ===== Privacy & Security ===== */
 .privacy {
   position: relative;
   padding: clamp(70px, 9vw, 120px) 0;
@@ -609,7 +629,7 @@ img.service-avatar,
   text-decoration: none;
 }
 
-/* Logos génériques */
+
 .partner img {
   max-height: 90px;
   max-width: 220px;
@@ -619,7 +639,7 @@ img.service-avatar,
   opacity: 1;
 }
 
-/* Logo IMEAH (plus grand et prioritaire) */
+
 #imeahLogo {
   width: clamp(240px, 24vw, 400px);
   height: auto;
@@ -628,7 +648,7 @@ img.service-avatar,
   display: block;
 }
 
-/* Effet au survol */
+
 .partner:hover img,
 .partner:focus-within img {
   opacity: 1;
@@ -636,7 +656,7 @@ img.service-avatar,
   filter: drop-shadow(0 0 8px rgba(7,191,179,0.35));
 }
 
-/* Fallback si pas de logo */
+
 .partner-fallback {
   padding: 10px 14px;
   border-radius: 999px;
@@ -649,7 +669,7 @@ img.service-avatar,
   opacity: .85;
 }
 
-/* Citation */
+
 .partners-quote {
   margin: 38px auto 0;
   max-width: 980px;
@@ -673,12 +693,12 @@ img.service-avatar,
   background: linear-gradient(90deg, transparent, #c6d3d8, transparent);
   border-radius: 2px;
 }
-/* Paragraphes normaux de la section */
+
+
 .partners p:not(.partners-quote) {
   font-size: 18px;
 }
 
-/* Citation (plus spécifique, sans !important) */
 .partners p.partners-quote,
 .partners .partners-quote,
 .partners .partners-quote p {
@@ -694,7 +714,6 @@ img.service-avatar,
   position: relative;
 }
 
-/* Ligne décorative */
 .partners .partners-quote::before {
   content: "";
   position: absolute;
@@ -707,7 +726,7 @@ img.service-avatar,
   border-radius: 2px;
 }
 
-/* Option mobile : un peu plus petit si besoin */
+
 @media (max-width: 640px) {
   .partners p.partners-quote,
   .partners .partners-quote,
@@ -716,23 +735,23 @@ img.service-avatar,
   }
 }
 
-/* Mobile : ne PAS justifier les citations/quotes */
+
 @media (max-width: 640px) {
-  /* liste large pour couvrir tes différents cas de “quote” */
+
   .partners-quote,
   .partners-quote *,
   blockquote,
   .quote,
   .citation {
-    text-align: center;   /* ou 'left' si tu préfères */
-    text-justify: auto;   /* annule l’espacement inter-mots */
+    text-align: center;   
+    text-justify: auto;   
   }
 }
 
 
 /* ===== Fix mobile Partners ===== */
 @media (max-width: 640px) {
-  /* 1) grille en une colonne et espacements adaptés */
+
   #partners .partners-list {
     display: grid;
     grid-template-columns: 1fr;
@@ -740,22 +759,22 @@ img.service-avatar,
     justify-items: center;
   }
 
-  /* 2) aucun débordement horizontal des images */
+  
   #partners .partner img {
     display: block;
     height: auto;
-    max-width: 82vw;   /* ne dépasse pas l’écran */
-    width: auto;       /* garde les proportions naturelles */
-    margin: 0 auto;    /* centre l’image */
+    max-width: 82vw;   
+    width: auto;       
+    margin: 0 auto;    
   }
 
-  /* 3) règle spécifique au logo imeah (un peu plus grand mais contenu) */
+  
   #imeahLogo {
-    max-width: 90vw;   /* limite à l’écran */
-    max-height: 90px;  /* évite qu’il “mange” la ligne suivante */
+    max-width: 90vw;   
+    max-height: 90px;  
   }
 
-  /* 4) le badge texte reste lisible et centré */
+
   #partners .partner-fallback {
     margin-top: 6px;
     text-align: center;
@@ -998,13 +1017,9 @@ img.service-avatar,
     box-shadow: 0 10px 24px rgba(0,0,0,.1);
   }
 
-  .site-nav .menu.active {
-    display: flex;
-  }
+  
 
-  .burger {
-    display: block;
-  }
+  
 }
 
 @media (max-width: 600px) {
@@ -1083,5 +1098,229 @@ body *:not(header):not(header *):not(.hero):not(.hero *):not(.privacy-quote):not
   text-align: justify;
   text-justify: inter-word;
 }
+
+
+
+/*=== Animations ===*/ 
+
+
+/*=== Introduction ===*/
+.fade-in { 
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.fade-in.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/*=== About - Mission - Vision ===*/
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 800ms ease, transform 800ms ease;
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    transition: none;
+    transform: none;
+  }
+}
+
+
+/*=== Values ===*/
+
+#values .value-item {
+  opacity: 1; 
+}
+
+#values .value-item .value-img,
+#values .value-item .value-text {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 700ms ease, transform 700ms ease;
+  will-change: opacity, transform;
+}
+
+
+#values .value-item .value-img { transform: translateX(-24px); }
+#values .value-item .value-text { transform: translateX(24px); }
+
+#values .value-item.reverse .value-img { transform: translateX(24px); }
+#values .value-item.reverse .value-text { transform: translateX(-24px); }
+
+#values .value-item.is-visible .value-img,
+#values .value-item.is-visible .value-text {
+  opacity: 1;
+  transform: none;
+}
+
+#values .value-item.is-visible .value-img { transition-delay: 0ms; }
+#values .value-item.is-visible .value-text { transition-delay: 120ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  #values .value-item .value-img,
+  #values .value-item .value-text {
+    transition: none;
+    transform: none;
+    opacity: 1;
+  }
+}
+
+
+/*=== Services ===*/
+
+#services .card-service {
+  opacity: 0;
+  transform: translateY(18px) scale(0.98);
+  transition: opacity 600ms ease, transform 600ms ease, box-shadow 300ms ease;
+  will-change: opacity, transform;
+}
+
+#services .card-service.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+#services .card-service.is-visible:hover {
+  box-shadow: 0 10px 28px rgba(0,0,0,0.08);
+  transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #services .card-service {
+    transition: none;
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/*=== Privacy ===*/
+
+
+.reveal-privacy {
+  opacity: 0;
+  transform: translateY(18px) scale(0.985);
+  transition: opacity 1500ms ease, transform 1500ms ease, box-shadow 800ms ease;
+  will-change: opacity, transform;
+}
+
+.reveal-privacy.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.privacy-card.is-visible {
+  animation: privacyPulse 2000ms ease 120ms 1 both;
+}
+@keyframes privacyPulse {
+  0%   { box-shadow: 0 0 0 rgba(0,0,0,0); }
+  40%  { box-shadow: 0 0 0 rgba(0,0,0,0), 0 0 24px rgba(0,179,164,0.25); }
+  100% { box-shadow: 0 10px 28px rgba(0,0,0,0.06); }
+}
+
+.privacy-card .checklist li {
+  opacity: 0;
+  transform: translateX(12px);
+  transition: opacity 1000ms ease, transform 1000ms ease;
+  will-change: opacity, transform;
+}
+.privacy-card.is-visible .checklist li {
+  opacity: 1;
+  transform: none;
+}
+.privacy-card.is-visible .checklist li:nth-child(1) { transition-delay: 80ms; }
+.privacy-card.is-visible .checklist li:nth-child(2) { transition-delay: 180ms; }
+.privacy-card.is-visible .checklist li:nth-child(3) { transition-delay: 280ms; }
+.privacy-card.is-visible .checklist li:nth-child(4) { transition-delay: 380ms; }
+
+.privacy-quote {
+  position: relative;
+}
+
+.privacy-quote.is-visible::after {
+  width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-privacy,
+  .privacy-card .checklist li,
+  .privacy-quote::after {
+    transition: none;
+    transform: none;
+    opacity: 1;
+    animation: none;
+    width: 100%;
+  }
+}
+
+
+/*=== Partners ===*/
+
+.reveal-partners {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 800ms ease, transform 800ms ease;
+  will-change: opacity, transform;
+}
+.reveal-partners.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.reveal-partner-item {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 600ms ease, transform 600ms ease;
+  will-change: opacity, transform;
+}
+.reveal-partner-item.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.partners-list--wall {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 24px;
+  align-items: center;
+}
+.partner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 20px;
+  background: var(--card-bg, #fff);
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  min-height: 120px;
+}
+.partner img {
+  max-width: 140px;
+  max-height: 60px;
+  width: auto;
+  height: auto;
+}
+
+/* Accessibilité */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-partners,
+  .reveal-partner-item {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+
 
 
