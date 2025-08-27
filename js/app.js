@@ -76,18 +76,20 @@ document.addEventListener("DOMContentLoaded", () => {
     <span class="sr-only">${full}</span>
   `;
 
+  // Prépare les éléments
   [title, paragraph, buttons].forEach(el => el.classList.add("fade-in"));
 
   const firstSpan  = title.querySelector(".first");
   const secondSpan = title.querySelector(".second");
 
+  // Séquence : H1 → part1 → part2 → (paragraphe + boutons ensemble)
   setTimeout(() => title.classList.add("show"),     200);
   setTimeout(() => firstSpan.classList.add("show"), 300);
   setTimeout(() => secondSpan.classList.add("show"), 900);
   setTimeout(() => {
     paragraph.classList.add("show");
     buttons.classList.add("show");
-  }, 1600); 
+  }, 1600); // << les deux apparaissent en même temps
 });
 
 /*=== About - Mission - Vision ===*/
@@ -228,3 +230,60 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { threshold: 0.2, rootMargin: '0px 0px -8% 0px' });
   items.forEach(el => ioItems.observe(el));
 });
+
+
+// ==== LANG SWITCHER (unique) ====
+(function(){
+  const root  = document.querySelector('[data-component="langy"]');
+  if(!root) return;
+
+  const btn   = root.querySelector('#langyBtn');
+  const menu  = root.querySelector('#langyMenu');
+  const items = [...menu.querySelectorAll('.langy__item')];
+  const flag  = document.getElementById('langyFlag');
+
+  // Langue courante via l’URL
+  const current = location.pathname.startsWith('/fr/') ? 'fr'
+                 : location.pathname.startsWith('/ar/') ? 'ar'
+                 : 'en';
+
+  // Affiche le bon drapeau sur le bouton
+  flag.className = 'flag ' + (current==='en' ? 'flag--gb' :
+                              current==='fr' ? 'flag--fr' : 'flag--lb');
+
+  // Cache l’option de la langue courante
+  const currentItem = menu.querySelector(`.langy__item[data-code="${current}"]`);
+  if (currentItem) currentItem.style.display = 'none';
+
+  function open(){ menu.dataset.open="true"; btn.setAttribute('aria-expanded','true'); }
+  function close(){ menu.dataset.open="false"; btn.setAttribute('aria-expanded','false'); }
+  function toggle(){ (menu.dataset.open==="true") ? close() : open(); }
+
+  btn.addEventListener('click', (e)=>{ e.stopPropagation(); toggle(); });
+  btn.addEventListener('keydown', (e)=>{
+    if(e.key==='Enter' || e.key===' ' || e.key==='ArrowDown'){
+      e.preventDefault(); open();
+      const first = menu.querySelector('.langy__item:not([style*="display: none"])');
+      if(first) first.focus();
+    }
+  });
+
+  // Navigation clavier dans la liste
+  menu.addEventListener('keydown', e=>{
+    const focusables = [...menu.querySelectorAll('.langy__item:not([style*="display: none"])')];
+    const i = focusables.indexOf(document.activeElement);
+    if(e.key==='Escape'){ e.preventDefault(); close(); btn.focus(); }
+    if(e.key==='ArrowDown'){ e.preventDefault(); (focusables[i+1]||focusables[0]).focus(); }
+    if(e.key==='ArrowUp'){ e.preventDefault(); (focusables[i-1]||focusables.at(-1)).focus(); }
+    if(e.key==='Enter' || e.key===' '){ e.preventDefault(); document.activeElement.click(); }
+  });
+
+  // Fermer au clic extérieur
+  document.addEventListener('click', (e)=>{ if(!root.contains(e.target)) close(); });
+
+  // Navigation au clic
+  items.forEach(li=>{
+    li.addEventListener('click', ()=>{ location.href = li.dataset.href || '/'; });
+  });
+})();
+
